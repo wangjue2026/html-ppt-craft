@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="./html2canvas.min.js"></script>
+  <script>window.html2canvas || document.write('<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"><\/script>')</script>
   <style>
     :root {
       --slide-bg: #FFFFFF;
@@ -1261,12 +1263,195 @@
       color: var(--text-primary);
     }
 
-    /* Print styles */
+    /* In-Slide Direct Download Button */
+    .slide-direct-dl-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      color: #475569;
+      padding: 3px 10px;
+      border-radius: 5px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .slide-direct-dl-btn:hover {
+      background: #EFF6FF;
+      color: #2563EB;
+      border-color: #BFDBFE;
+    }
+
+    /* Side Elevator Navigation */
+    .side-elevator-nav {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+      border-radius: 24px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 950;
+      transition: all 0.25s ease;
+    }
+
+    .elevator-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 18px;
+      cursor: pointer;
+      color: #64748B;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .elevator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #CBD5E1;
+      transition: all 0.18s ease;
+    }
+
+    .elevator-item:hover {
+      background: #F1F5F9;
+      color: var(--primary-blue);
+    }
+
+    .elevator-item.active {
+      background: #EFF6FF;
+      color: var(--primary-blue);
+    }
+
+    .elevator-item.active .elevator-dot {
+      background: var(--primary-blue);
+      transform: scale(1.3);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Floating Toolbar */
+    .floating-toolbar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 6px 16px;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.28);
+      white-space: nowrap;
+    }
+
+    .tb-info-tag {
+      color: #94A3B8;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tb-info-badge {
+      background: rgba(255, 255, 255, 0.12);
+      color: #F1F5F9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .tb-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F8FAFC;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 12.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .tb-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+    }
+
+    .tb-btn-primary {
+      background: #2563EB;
+      border-color: #3B82F6;
+    }
+
+    .tb-btn-primary:hover {
+      background: #1D4ED8;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(15, 23, 42, 0.94);
+      color: #FFFFFF;
+      padding: 10px 22px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.18);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 16:9 Standard PDF Printing */
+    @page {
+      size: 1920px 1080px;
+      margin: 0;
+    }
+
     @media print {
       body, html {
         background: transparent !important;
         overflow: visible !important;
         height: auto !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .floating-toolbar, .side-elevator-nav, .toast-msg, .slide-direct-dl-btn {
+        display: none !important;
       }
       .deck-stream {
         display: block !important;
@@ -1279,9 +1464,11 @@
         page-break-after: always !important;
         break-after: page !important;
         margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
       }
       .slide-canvas {
-        position: relative !important;
+        position: absolute !important;
         top: 0 !important;
         left: 0 !important;
         transform: none !important;
@@ -1302,7 +1489,7 @@
          SLIDE 1: SASE业务组上半年工作总结
          ========================================================================= -->
     <div class="slide-frame" id="frame-1">
-      <div class="slide-canvas slide-spacious" id="slide-1" data-slide-index="1">
+      <div class="slide-canvas slide-spacious" id="slide-1" data-slide-index="1" data-title="SASE业务组上半年工作总结">
         <div class="slide-top-bar"></div>
 
         <header class="header">
@@ -1314,8 +1501,9 @@
             <h1 class="main-title">SASE业务组上半年工作总结</h1>
             <p class="sub-title">围绕核心业务场景打通可用性闭环与体验规范；持续推进 AI 从原型验证到工具链、规范代码资产的高效演进</p>
           </div>
-          <div class="header-right">
+          <div class="header-right" style="display:flex; align-items:center; gap:10px;">
             <div class="period-chip">业务方向聚焦与落地攻坚 · AI 工程化探索沉淀</div>
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(1)" title="单独导出第 1 页 1080P 高清大图">📥 导出本页图</button>
           </div>
         </header>
 
@@ -1502,7 +1690,7 @@
          SLIDE 2: 视觉组 2026 年上半年工作总结
          ========================================================================= -->
     <div class="slide-frame" id="frame-2">
-      <div class="slide-canvas slide-spacious" id="slide-2" data-slide-index="2">
+      <div class="slide-canvas slide-spacious" id="slide-2" data-slide-index="2" data-title="视觉组2026上半年工作总结">
         <div class="slide-top-bar"></div>
 
         <header class="header">
@@ -1514,8 +1702,9 @@
             <h1 class="main-title">视觉组 2026 年上半年工作总结</h1>
             <p class="sub-title">高频支撑多业务线版本交付与体验调优；聚焦 AI 原生视觉语言、组件资产与工作流效能质变突破</p>
           </div>
-          <div class="header-right">
+          <div class="header-right" style="display:flex; align-items:center; gap:10px;">
             <div class="period-chip">7 大业务高频交付 · AI 全链路提效 · 视觉资产沉淀</div>
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(2)" title="单独导出第 2 页 1080P 高清大图">📥 导出本页图</button>
           </div>
         </header>
 
@@ -1714,7 +1903,7 @@
          SLIDE 3: AI安全运营 (宽敞舒适大气模式 · 放大字号与间距)
          ========================================================================= -->
     <div class="slide-frame" id="frame-3">
-      <div class="slide-canvas slide-spacious" id="slide-3" data-slide-index="3">
+      <div class="slide-canvas slide-spacious" id="slide-3" data-slide-index="3" data-title="AI安全运营_工作总结">
         <div class="slide-top-bar"></div>
 
         <header class="header">
@@ -1726,8 +1915,9 @@
             <h1 class="main-title">AI安全运营</h1>
             <p class="sub-title">围绕 DR2.0、S1 与服务侧全景业务交付，推进最小化版本落地与服务流程体验优化</p>
           </div>
-          <div class="header-right">
+          <div class="header-right" style="display:flex; align-items:center; gap:10px;">
             <div class="period-chip">SANGFOR 深信服科技 · 让每个用户的数字化更简单、更安全</div>
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(3)" title="单独导出第 3 页 1080P 高清大图">📥 导出本页图</button>
           </div>
         </header>
 
@@ -1902,7 +2092,7 @@
          SLIDE 4: 安全二组上半年工作总结 (保护AI / ZTP & DSP)
          ========================================================================= -->
     <div class="slide-frame" id="frame-4">
-      <div class="slide-canvas slide-spacious" id="slide-4" data-slide-index="4">
+      <div class="slide-canvas slide-spacious" id="slide-4" data-slide-index="4" data-title="安全二组上半年工作总结">
         <div class="slide-top-bar"></div>
 
         <header class="header">
@@ -1914,7 +2104,8 @@
             <h1 class="main-title">安全二组上半年工作总结</h1>
             <p class="sub-title">新产品孵化与原生范式探索 · 新方向验证与成熟能力深化</p>
           </div>
-          <div class="header-right">
+          <div class="header-right" style="display:flex; align-items:center; gap:12px;">
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(4)" title="单独导出第 4 页 1080P 高清大图">📥 导出本页图</button>
             <div class="sangfor-brand-group">
               <div class="sangfor-logo-wrap">
                 <svg class="sangfor-logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2097,7 +2288,7 @@
          SLIDE 5: AI-Native 研发与设计交付演进历程 (3阶段演进全景看板)
          ========================================================================= -->
     <div class="slide-frame" id="frame-5">
-      <div class="slide-canvas slide-spacious" id="slide-5" data-slide-index="5">
+      <div class="slide-canvas slide-spacious" id="slide-5" data-slide-index="5" data-title="AI-Native演进历程_工作总结">
         <div class="slide-top-bar"></div>
 
         <header class="header">
@@ -2109,7 +2300,8 @@
             <h1 class="main-title">AI-Native 演进历程：从野蛮探索走向正轨初见成效</h1>
             <p class="sub-title">阶段1全员工具试水 → 阶段2真实工程可交付 → 阶段3自动化流水线跑通与多产线验证</p>
           </div>
-          <div class="header-right">
+          <div class="header-right" style="display:flex; align-items:center; gap:12px;">
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(5)" title="单独导出第 5 页 1080P 高清大图">📥 导出本页图</button>
             <div class="sangfor-brand-group">
               <div class="sangfor-logo-wrap">
                 <svg class="sangfor-logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2295,8 +2487,105 @@
 
   </div>
 
+  <!-- Side Elevator Navigation (垂直电梯直达导航) -->
+  <nav class="side-elevator-nav" id="elevatorNav">
+    <div class="elevator-item active" id="elev-1" onclick="scrollToSlide(1)">
+      <span class="elevator-dot"></span>
+      <span>01 SASE 业务组</span>
+    </div>
+    <div class="elevator-item" id="elev-2" onclick="scrollToSlide(2)">
+      <span class="elevator-dot"></span>
+      <span>02 视觉组总结</span>
+    </div>
+    <div class="elevator-item" id="elev-3" onclick="scrollToSlide(3)">
+      <span class="elevator-dot"></span>
+      <span>03 AI 安全运营</span>
+    </div>
+    <div class="elevator-item" id="elev-4" onclick="scrollToSlide(4)">
+      <span class="elevator-dot"></span>
+      <span>04 业务安全组</span>
+    </div>
+    <div class="elevator-item" id="elev-5" onclick="scrollToSlide(5)">
+      <span class="elevator-dot"></span>
+      <span>05 AI-Native 演进</span>
+    </div>
+  </nav>
+
+  <!-- Floating Toolbar (底部全功能控制坞) -->
+  <div class="floating-toolbar" id="floatingToolbar">
+    <div class="tb-info-tag">
+      <span class="tb-info-badge">16:9 垂直长卷</span>
+      <span id="scaleDisplay">自适应缩放</span>
+    </div>
+
+    <button class="tb-btn" onclick="toggleFullscreen()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      全屏演示
+    </button>
+    <button class="tb-btn" onclick="window.print()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      导出 5 页 16:9 PDF
+    </button>
+    <button class="tb-btn" onclick="exportAllSlides()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      一键导出全部 5 页
+    </button>
+    <button class="tb-btn tb-btn-primary" id="btnExportCurrent" onclick="exportCurrentSlide()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+      下载当前视口大图
+    </button>
+  </div>
+
+  <div class="toast-msg" id="toastMsg"></div>
+
   <script>
-    // 纯净自动缩放引擎：随浏览器窗口大小自由等比缩放 16:9 画板
+    const totalSlides = 5;
+    let currentInViewSlide = 1;
+
+    function showToast(text) {
+      const toast = document.getElementById('toastMsg');
+      if (!toast) return;
+      toast.innerText = text;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2800);
+    }
+
+    function scrollToSlide(index) {
+      const frame = document.getElementById(`frame-${index}`);
+      if (frame) {
+        frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      const frames = [1, 2, 3, 4, 5].map(i => document.getElementById(`frame-${i}`));
+      const scrollY = window.scrollY + window.innerHeight / 2;
+
+      for (let i = 0; i < frames.length; i++) {
+        const frame = frames[i];
+        if (!frame) continue;
+        const top = frame.offsetTop;
+        const bottom = top + frame.offsetHeight;
+        if (scrollY >= top && scrollY <= bottom) {
+          currentInViewSlide = i + 1;
+          break;
+        }
+      }
+
+      for (let i = 1; i <= totalSlides; i++) {
+        const item = document.getElementById(`elev-${i}`);
+        if (item) {
+          if (i === currentInViewSlide) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        }
+      }
+    }, { passive: true });
+
     function autoScaleSlide() {
       const vw = window.innerWidth;
       const targetWidth = vw * 0.92;
@@ -2306,12 +2595,163 @@
       if (scale < 0.45) scale = 0.45;
       
       document.documentElement.style.setProperty('--slide-scale', scale);
+
+      const scaleDisplay = document.getElementById('scaleDisplay');
+      if (scaleDisplay) {
+        scaleDisplay.innerText = `${Math.round(scale * 100)}% 视口适配`;
+      }
     }
 
     window.addEventListener('resize', autoScaleSlide);
     window.addEventListener('orientationchange', autoScaleSlide);
+    document.addEventListener('fullscreenchange', autoScaleSlide);
     window.addEventListener('DOMContentLoaded', autoScaleSlide);
     autoScaleSlide();
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.error(err));
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    function exportCurrentSlide() {
+      exportSingleSlide(currentInViewSlide);
+    }
+
+    async function exportAllSlides() {
+      showToast('正在依次渲染并导出全部 5 页高清图，请稍候...');
+      for (let i = 1; i <= totalSlides; i++) {
+        await exportSingleSlide(i);
+        await new Promise(r => setTimeout(r, 600));
+      }
+      showToast('全部 5 页高清图导出完毕！');
+    }
+
+    async function exportSingleSlide(slideIndex) {
+      const slide = document.getElementById(`slide-${slideIndex}`);
+      if (!slide) return;
+
+      if (typeof html2canvas === 'undefined') {
+        alert('导出组件尚未就绪，请使用底部“导出 5 页 16:9 PDF”保存');
+        return;
+      }
+      
+      const rawTitle = slide.getAttribute('data-title') || `Slide_${slideIndex}`;
+      const safeTitle = rawTitle.replace(/[\\/:*?"<>|]/g, '_');
+      const filename = `2026年中工作总结_第${slideIndex}页_${safeTitle}.png`;
+
+      showToast(`正在渲染第 ${slideIndex} 页 1080P 高清大图...`);
+
+      const prevTransform = slide.style.transform;
+      const prevTop = slide.style.top;
+      const prevLeft = slide.style.left;
+      const prevPos = slide.style.position;
+      const prevMargin = slide.style.margin;
+      const prevZIndex = slide.style.zIndex;
+      const prevRadius = slide.style.borderRadius;
+      const prevShadow = slide.style.boxShadow;
+
+      try {
+        slide.style.position = 'fixed';
+        slide.style.top = '0px';
+        slide.style.left = '0px';
+        slide.style.transform = 'none';
+        slide.style.margin = '0px';
+        slide.style.borderRadius = '0px';
+        slide.style.boxShadow = 'none';
+        slide.style.zIndex = '999999';
+
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        await new Promise(resolve => setTimeout(resolve, 80));
+
+        const canvas = await html2canvas(slide, {
+          scale: 1,
+          width: 1920,
+          height: 1080,
+          x: 0,
+          y: 0,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: 1920,
+          windowHeight: 1080,
+          useCORS: true,
+          backgroundColor: '#FFFFFF',
+          logging: false,
+          ignoreElements: function(element) {
+            return element.id === 'floatingToolbar' || 
+                   element.id === 'elevatorNav' || 
+                   element.id === 'toastMsg' || 
+                   element.classList.contains('slide-direct-dl-btn');
+          }
+        });
+
+        if (canvas.toBlob) {
+          canvas.toBlob(function(blob) {
+            if (!blob) {
+              triggerDataURLDownload(canvas, filename);
+              return;
+            }
+            const blobUrl = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            downloadLink.style.display = 'none';
+            downloadLink.href = blobUrl;
+            downloadLink.download = filename;
+            downloadLink.setAttribute('download', filename);
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            showToast(`已下载第 ${slideIndex} 页高清图：${filename}`);
+
+            if (navigator.clipboard && window.ClipboardItem) {
+              try {
+                navigator.clipboard.write([
+                  new ClipboardItem({ 'image/png': blob })
+                ]).catch(() => {});
+              } catch (clipErr) {}
+            }
+
+            setTimeout(() => {
+              document.body.removeChild(downloadLink);
+              URL.revokeObjectURL(blobUrl);
+            }, 2000);
+          }, 'image/png', 1.0);
+        } else {
+          triggerDataURLDownload(canvas, filename);
+        }
+
+      } catch (e) {
+        console.error('Export error:', e);
+        showToast('导出异常，请尝试使用“导出 5 页 16:9 PDF”保存');
+      } finally {
+        slide.style.transform = prevTransform;
+        slide.style.top = prevTop;
+        slide.style.left = prevLeft;
+        slide.style.position = prevPos;
+        slide.style.margin = prevMargin;
+        slide.style.borderRadius = prevRadius;
+        slide.style.boxShadow = prevShadow;
+        slide.style.zIndex = prevZIndex;
+      }
+    }
+
+    function triggerDataURLDownload(canvas, filename) {
+      try {
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.style.display = 'none';
+        link.download = filename;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => document.body.removeChild(link), 1000);
+        showToast(`下载完成：${filename}`);
+      } catch (err) {
+        console.error('DataURL download failed:', err);
+        alert('无法直接生成图片，请使用底部“导出 5 页 16:9 PDF”进行保存');
+      }
+    }
   </script>
 </body>
 </html>

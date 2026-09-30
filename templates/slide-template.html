@@ -7,7 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="./html2canvas.min.js"></script>
+  <script>window.html2canvas || document.write('<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"><\/script>')</script>
   <style>
     :root {
       --slide-bg: #FFFFFF;
@@ -393,17 +394,36 @@
       border-color: #3B82F6;
     }
 
+    @page {
+      size: 1920px 1080px;
+      margin: 0;
+    }
+
     @media print {
-      body { background: transparent; }
+      html, body {
+        width: 1920px !important;
+        height: 1080px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       .floating-toolbar { display: none !important; }
-      .stage { position: static; width: 100%; height: 100vh; }
+      .stage {
+        position: static !important;
+        width: 1920px !important;
+        height: 1080px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
       .slide-canvas {
-        position: static;
+        position: static !important;
         transform: none !important;
-        width: 100%;
-        height: 100vh;
-        border-radius: 0;
-        box-shadow: none;
+        width: 1920px !important;
+        height: 1080px !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
       }
     }
   </style>
@@ -487,24 +507,123 @@
       const old = btn.innerHTML;
       btn.innerHTML = '正在导出...';
       btn.disabled = true;
+
+      const slide = document.getElementById('slideTarget');
+      if (!slide) {
+        btn.innerHTML = old;
+        btn.disabled = false;
+        return;
+      }
+
+      if (typeof html2canvas === 'undefined') {
+        alert('导出组件正在加载，请稍候再试，或使用“🖨️ 导出 PDF”保存');
+        btn.innerHTML = old;
+        btn.disabled = false;
+        return;
+      }
+
+      const prevTransform = slide.style.transform;
+      const prevTop = slide.style.top;
+      const prevLeft = slide.style.left;
+      const prevPos = slide.style.position;
+      const prevMargin = slide.style.margin;
+      const prevZIndex = slide.style.zIndex;
+      const prevRadius = slide.style.borderRadius;
+      const prevShadow = slide.style.boxShadow;
+
       try {
-        const slide = document.getElementById('slideTarget');
+        slide.style.position = 'fixed';
+        slide.style.top = '0px';
+        slide.style.left = '0px';
+        slide.style.transform = 'none';
+        slide.style.margin = '0px';
+        slide.style.borderRadius = '0px';
+        slide.style.boxShadow = 'none';
+        slide.style.zIndex = '999999';
+
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        await new Promise(resolve => setTimeout(resolve, 80));
+
         const canvas = await html2canvas(slide, {
           scale: 1,
           width: 1920,
           height: 1080,
+          x: 0,
+          y: 0,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: 1920,
+          windowHeight: 1080,
           useCORS: true,
-          backgroundColor: '#FFFFFF'
+          backgroundColor: '#FFFFFF',
+          logging: false,
+          ignoreElements: function(element) {
+            return element.classList.contains('floating-toolbar');
+          }
         });
-        const link = document.createElement('a');
-        link.download = 'presentation_16x9_slide.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+
+        const filename = 'presentation_16x9_slide.png';
+
+        if (canvas.toBlob) {
+          canvas.toBlob(function(blob) {
+            if (!blob) {
+              triggerDataURLDownload(canvas, filename);
+              return;
+            }
+            const blobUrl = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            downloadLink.style.display = 'none';
+            downloadLink.href = blobUrl;
+            downloadLink.download = filename;
+            downloadLink.setAttribute('download', filename);
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            if (navigator.clipboard && window.ClipboardItem) {
+              try {
+                navigator.clipboard.write([
+                  new ClipboardItem({ 'image/png': blob })
+                ]).catch(() => {});
+              } catch (clipErr) {}
+            }
+
+            setTimeout(() => {
+              document.body.removeChild(downloadLink);
+              URL.revokeObjectURL(blobUrl);
+            }, 2000);
+          }, 'image/png', 1.0);
+        } else {
+          triggerDataURLDownload(canvas, filename);
+        }
       } catch (err) {
-        alert('导出失败，请使用系统截屏或打印为PDF');
+        console.error('Export error:', err);
+        alert('导出失败，请使用“🖨️ 导出 PDF”保存或使用系统截屏');
       } finally {
+        slide.style.transform = prevTransform;
+        slide.style.top = prevTop;
+        slide.style.left = prevLeft;
+        slide.style.position = prevPos;
+        slide.style.margin = prevMargin;
+        slide.style.borderRadius = prevRadius;
+        slide.style.boxShadow = prevShadow;
+        slide.style.zIndex = prevZIndex;
         btn.innerHTML = old;
         btn.disabled = false;
+      }
+    }
+
+    function triggerDataURLDownload(canvas, filename) {
+      try {
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.style.display = 'none';
+        link.download = filename;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => document.body.removeChild(link), 1000);
+      } catch (err) {
+        alert('无法直接生成图片，请使用“🖨️ 导出 PDF”保存');
       }
     }
   </script>

@@ -121,15 +121,14 @@ description: >-
    * **高饱满度宽屏排版 (Spacious & Rich · 默认推荐)**：适用于标准汇报与高管演示（正文 **17.5px**、行高 **1.72~1.75**、卡片标题 **22~24px**、列表间距 **14~18px**、卡片内边距 **24~30px**），视觉饱满大气，彻底消除零散空洞感。
    * **紧凑密集排版 (Compact)**：适用于条目极多、超高密度的综合清单（正文 15px、行高 1.56、间距紧凑收敛），保障信息单页容纳。
    * 在 CSS 中通过 CSS 变量（`--body-size`, `--body-lh`, `--gap-list`, `--padding-card`）统一定义。
-4. **悬浮控制胶囊 (Floating Toolbar)**：
-   * 密度切换开关（`舒适大字` / `紧凑排版`）
-   * 全屏演示按钮（调用 `requestFullscreen()`）
-   * 导出 PDF 按钮（调用 `window.print()`）
-   * 下载高清图片按钮（集成 `html2canvas` 导出原生 1920x1080 PNG）
+4. **悬浮控制胶囊与导出体系 (Floating Toolbar & Export Suite)**：
+   * **全屏演示按钮**：调用 `requestFullscreen()` 实现沉浸式汇报。
+   * **导出 16:9 PDF**：必须在 CSS 中配置 `@page { size: 1920px 1080px; margin: 0; }` 以及 `-webkit-print-color-adjust: exact; print-color-adjust: exact;`，确保浏览器打印时输出纯正 16:9 横版无白边、色彩完整的高清 PDF。
+   * **下载 1080P 高清大图**：集成 `html2canvas` 导出原生 1920×1080 PNG。**关键注意**：在调用 `html2canvas` 渲染前，必须临时将画板的 CSS `transform` 重置为 `none`，并将 `position` 临时设为 `fixed`、`top:0`、`left:0`，待截图完成后再恢复原位，防止画板缩放变换导致截图留白或严重偏移；禁止设置 `allowTaint: true`，避免触发浏览器的 Canvas 安全导出拦截。
 
 ### 第三步：输出一张配套的高清 16:9 大图
-1. 使用浏览器子代理（`browser_subagent`）或辅助脚本捕获/导出无失真、无外围阴影的纯净 16:9 画板图像。
-2. 图像保存为 `[name]_slide.png`。
+1. 使用画板自带的“下载高清大图”能力或浏览器子代理（`browser_subagent`）/辅助脚本，捕获无失真、无外围阴影的纯净 1920×1080 画板图像。
+2. 图像保存为 `slides_output/[name]_slide.png`。
 3. 确保该图片拖拽进现有的 PowerPoint 或 Keynote 页面时能严丝合缝填满 16:9 画面。
 
 ### 第四步：交付总结与说明

@@ -902,12 +902,19 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Print styles: 3-Page 16:9 Output */
+    /* Print styles: 16:9 Standard Output */
+    @page {
+      size: 1920px 1080px;
+      margin: 0;
+    }
+
     @media print {
       body, html {
         background: transparent !important;
         overflow: visible !important;
         height: auto !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
       .floating-toolbar, .side-elevator-nav, .toast-msg, .slide-direct-dl-btn {
         display: none !important;
@@ -923,9 +930,11 @@
         page-break-after: always !important;
         break-after: page !important;
         margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
       }
       .slide-canvas {
-        position: relative !important;
+        position: absolute !important;
         top: 0 !important;
         left: 0 !important;
         transform: none !important;
@@ -1720,7 +1729,6 @@
           windowWidth: 1920,
           windowHeight: 1080,
           useCORS: true,
-          allowTaint: true,
           backgroundColor: '#FFFFFF',
           logging: false,
           ignoreElements: function(element) {
