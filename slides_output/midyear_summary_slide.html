@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026上半年工作总结 (垂直浏览演示报告)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="./html2canvas.min.js"></script>
+  <script>window.html2canvas || document.write('<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"><\/script>')</script>
+  <style>
+    :root {
+      --slide-bg: #FFFFFF;
+      --card-bg: #F8FAFC;
+      --card-inner-bg: #FFFFFF;
+      
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-tertiary: #64748B;
+      --text-muted: #94A3B8;
+      
+      --border-subtle: #E2E8F0;
+      --border-card: #E2E8F0;
+      
+      /* Accents */
+      --primary-blue: #2563EB;
+      --primary-light: #EFF6FF;
+      --primary-border: #BFDBFE;
+      
+      --success-green: #059669;
+      --success-light: #ECFDF5;
+      --success-border: #A7F3D0;
+      
+      --warning-amber: #D97706;
+      --warning-light: #FFFBEB;
+      --warning-border: #FDE68A;
+      
+      --danger-red: #DC2626;
+      --danger-light: #FEF2F2;
+      --danger-border: #FECACA;
+      
+      --ai-purple: #4F46E5;
+      --ai-light: #EEF2FF;
+      --ai-border: #C7D2FE;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background-color: #ECEFF3;
+      font-family: 'Noto Sans SC', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    /* Vertical Continuous Stream Layout */
+    .deck-stream {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      padding: 40px 0 120px 0;
+    }
+
+    /* Responsive 16:9 Frame Wrapper */
+    .slide-frame {
+      position: relative;
+      width: calc(1920px * var(--slide-scale, 0.72));
+      height: calc(1080px * var(--slide-scale, 0.72));
+      flex-shrink: 0;
+      transition: width 0.08s ease, height 0.08s ease;
+    }
+
+    /* Fixed 1920x1080 Canvas Scaled to Frame */
+    .slide-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1920px;
+      height: 1080px;
+      transform-origin: top left;
+      transform: scale(var(--slide-scale, 0.72));
+      background: var(--slide-bg);
+      border-radius: 14px;
+      box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.14), 0 4px 16px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: var(--padding-canvas);
+      transition: transform 0.08s ease;
+
+      /* Slide 1 & 2 Comfortable Mode */
+      --title-size: 36px;
+      --subtitle-size: 18px;
+      --panel-title-size: 26px;
+      --panel-tagline-size: 15px;
+      
+      --card-title-size: 20px;
+      --card-desc-size: 15px;
+      --tag-size: 13.5px;
+      
+      --metric-val-size: 24px;
+      --metric-lbl-size: 13.5px;
+      
+      --body-size: 15.5px;
+      --body-lh: 1.56;
+      --bullet-size: 6px;
+      
+      --gap-col: 30px;
+      --gap-panel: 18px;
+      --gap-card-inner: 14px;
+      --gap-list: 10px;
+      --gap-smg: 24px;
+      
+      --padding-canvas: 44px 60px 32px;
+      --padding-card: 22px 24px;
+      --padding-card-bottom: 16px 20px;
+      --padding-metric: 12px 16px;
+    }
+
+    /* =========================================================
+       Slide 3: Spacious & Relaxed Mode (放宽字体与间距，消除留白)
+       ========================================================= */
+    .slide-canvas.slide-spacious {
+      --title-size: 38px;
+      --subtitle-size: 19px;
+      --panel-title-size: 28px;
+      --panel-tagline-size: 16px;
+      
+      --card-title-size: 24px;
+      --card-desc-size: 16px;
+      --tag-size: 14.5px;
+      
+      --body-size: 17.5px;
+      --body-lh: 1.72;
+      --bullet-size: 7px;
+      
+      --gap-col: 36px;
+      --gap-panel: 22px;
+      --gap-card-inner: 18px;
+      --gap-list: 16px;
+      
+      --padding-canvas: 48px 64px 36px;
+      --padding-card: 28px 32px;
+    }
+
+    /* Top Accent Line */
+    .slide-top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #2563EB 0%, #4F46E5 50%, #06B6D4 100%);
+    }
+
+    /* Header Section */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: var(--gap-panel);
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .badge-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-blue);
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      padding: 4px 12px;
+      border-radius: 5px;
+      width: fit-content;
+    }
+
+    .badge-label .dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--primary-blue);
+      border-radius: 50%;
+    }
+
+    .main-title {
+      font-size: var(--title-size);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.22;
+    }
+
+    .sub-title {
+      font-size: var(--subtitle-size);
+      color: var(--text-tertiary);
+      font-weight: 400;
+      line-height: 1.38;
+      margin-top: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .period-chip {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: #F1F5F9;
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    /* Main Grid Layouts */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1.36fr 1fr;
+      gap: var(--gap-col);
+      flex: 1;
+      min-height: 0;
+    }
+
+    .grid-container-equal {
+      display: grid;
+      grid-template-columns: 1.22fr 1fr;
+      gap: var(--gap-col);
+      flex: 1;
+      min-height: 0;
+    }
+
+    .grid-container-secops {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: var(--gap-col);
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Column Panel */
+    .column-panel {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-panel);
+      min-height: 0;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 16px;
+      margin-bottom: -2px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: var(--panel-title-size);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .panel-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .icon-business {
+      background: #EFF6FF;
+      color: var(--primary-blue);
+      border: 1px solid var(--primary-border);
+    }
+
+    .icon-ai {
+      background: #EEF2FF;
+      color: var(--ai-purple);
+      border: 1px solid var(--ai-border);
+    }
+
+    .icon-service {
+      background: #ECFDF5;
+      color: var(--success-green);
+      border: 1px solid var(--success-border);
+    }
+
+    .panel-tagline {
+      font-size: var(--panel-tagline-size);
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Project Cards Base */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: var(--padding-card);
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-card-inner);
+      box-shadow: var(--shadow-card);
+    }
+
+    .card-dominance {
+      flex: 1.15;
+      justify-content: flex-start;
+      gap: var(--gap-smg, 24px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-name-group {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: var(--card-title-size);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .card-desc {
+      font-size: var(--card-desc-size);
+      color: var(--text-tertiary);
+    }
+
+    /* Status Tags */
+    .status-tag {
+      font-size: var(--tag-size);
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-delay {
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+    }
+
+    .status-progress {
+      background: #EFF6FF;
+      color: #1E40AF;
+      border: 1px solid #BFDBFE;
+    }
+
+    .status-success {
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+    }
+
+    .status-watch {
+      background: #F1F5F9;
+      color: #475569;
+      border: 1px solid #CBD5E1;
+    }
+
+    .status-purple {
+      background: #EEF2FF;
+      color: #4338CA;
+      border: 1px solid #C7D2FE;
+    }
+
+    /* Metrics Row */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      background: var(--card-inner-bg);
+      padding: var(--padding-metric);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-value {
+      font-size: var(--metric-val-size);
+      font-weight: 800;
+      color: var(--primary-blue);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.15;
+    }
+
+    .metric-value-ai {
+      color: var(--ai-purple);
+    }
+
+    .metric-label {
+      font-size: var(--metric-lbl-size);
+      color: var(--text-tertiary);
+      margin-top: 3px;
+    }
+
+    /* Detail List */
+    .detail-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-list);
+    }
+
+    .detail-item {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: var(--body-lh);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .bullet {
+      width: var(--bullet-size);
+      height: var(--bullet-size);
+      border-radius: 50%;
+      background: #94A3B8;
+      margin-top: 9px;
+      flex-shrink: 0;
+    }
+
+    .highlight-text {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Item label tags for 关键进展 & 遗留问题 */
+    .item-label-progress {
+      display: inline-flex;
+      align-items: center;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--primary-blue);
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      padding: 2px 9px;
+      border-radius: 4px;
+      margin-right: 8px;
+      flex-shrink: 0;
+      line-height: 1.35;
+    }
+
+    .item-label-issue {
+      display: inline-flex;
+      align-items: center;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #B45309;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      padding: 2px 9px;
+      border-radius: 4px;
+      margin-right: 8px;
+      flex-shrink: 0;
+      line-height: 1.35;
+    }
+
+    /* Sub-card list for Service Side */
+    .subcard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .service-sub-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .service-sub-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #E2E8F0;
+    }
+
+    .service-sub-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-other-card {
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      border-radius: var(--radius-sm);
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .service-other-badge {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #334155;
+      background: #E2E8F0;
+      padding: 3px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Bottom Split Row */
+    .bottom-row-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1.05;
+    }
+
+    .card-bottom-sub {
+      padding: var(--padding-card-bottom);
+      gap: 10px;
+    }
+
+    /* AI Section Cards */
+    .ai-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .ai-card-tall {
+      flex: 1.25;
+      justify-content: flex-start;
+    }
+
+    .ai-card-flex {
+      flex: 1;
+    }
+
+    .ai-card-title {
+      font-size: var(--card-title-size);
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ai-pill {
+      font-size: var(--tag-size);
+      font-weight: 600;
+      color: var(--ai-purple);
+      background: var(--ai-light);
+      border: 1px solid var(--ai-border);
+      padding: 3px 9px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .ai-stat-box {
+      background: #FFFFFF;
+      border: 1px solid var(--ai-border);
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .ai-stat-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: var(--metric-val-size);
+      font-weight: 800;
+      color: var(--ai-purple);
+    }
+
+    .ai-stat-sub {
+      font-size: var(--metric-lbl-size);
+      color: var(--text-tertiary);
+    }
+
+    /* Retrospective Boxes */
+    .retro-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .retro-sub-box {
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .retro-box-success {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+    }
+
+    .retro-box-warning {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+    }
+
+    .retro-header-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
+    .retro-box-success .retro-header-tag {
+      color: #15803D;
+    }
+
+    .retro-box-warning .retro-header-tag {
+      color: #B45309;
+    }
+
+    .retro-text {
+      font-size: var(--body-size);
+      line-height: 1.48;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    .slide-footer {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-dot {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: #CBD5E1;
+      border-radius: 50%;
+    }
+
+    .footer-page-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      color: var(--text-secondary);
+      background: #F1F5F9;
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* In-Slide Direct Download Button */
+    .slide-direct-dl-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      color: #475569;
+      padding: 3px 10px;
+      border-radius: 5px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .slide-direct-dl-btn:hover {
+      background: #EFF6FF;
+      color: #2563EB;
+      border-color: #BFDBFE;
+    }
+
+    /* Side Elevator Navigation (垂直电梯直达导航) */
+    .side-elevator-nav {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+      border-radius: 24px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 950;
+      transition: all 0.25s ease;
+    }
+
+    .elevator-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 18px;
+      cursor: pointer;
+      color: #64748B;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .elevator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #CBD5E1;
+      transition: all 0.18s ease;
+    }
+
+    .elevator-item:hover {
+      background: #F1F5F9;
+      color: var(--primary-blue);
+    }
+
+    .elevator-item.active {
+      background: #EFF6FF;
+      color: var(--primary-blue);
+    }
+
+    .elevator-item.active .elevator-dot {
+      background: var(--primary-blue);
+      transform: scale(1.3);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Floating Toolbar */
+    .floating-toolbar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 6px 16px;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.28);
+      white-space: nowrap;
+    }
+
+    .tb-info-tag {
+      color: #94A3B8;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tb-info-badge {
+      background: rgba(255, 255, 255, 0.12);
+      color: #F1F5F9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .tb-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F8FAFC;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 12.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .tb-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+    }
+
+    .tb-btn-primary {
+      background: #2563EB;
+      border-color: #3B82F6;
+    }
+
+    .tb-btn-primary:hover {
+      background: #1D4ED8;
+    }
+
+    /* Toast Notification */
+    .toast-msg {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(15, 23, 42, 0.94);
+      color: #FFFFFF;
+      padding: 10px 22px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.18);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Print styles: 3-Page 16:9 Output */
+    @media print {
+      body, html {
+        background: transparent !important;
+        overflow: visible !important;
+        height: auto !important;
+      }
+      .floating-toolbar, .side-elevator-nav, .toast-msg, .slide-direct-dl-btn {
+        display: none !important;
+      }
+      .deck-stream {
+        display: block !important;
+        padding: 0 !important;
+        gap: 0 !important;
+      }
+      .slide-frame {
+        width: 1920px !important;
+        height: 1080px !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        margin: 0 !important;
+      }
+      .slide-canvas {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 1920px !important;
+        height: 1080px !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toastMsg">图片下载已开始</div>
+
+  <!-- Side Elevator Navigation (电梯直达侧边栏) -->
+  <nav class="side-elevator-nav" id="elevatorNav">
+    <div class="elevator-item active" onclick="scrollToSlide(1)" id="elev-1">
+      <span class="elevator-dot"></span>
+      <span class="elevator-label">01 SASE 业务组</span>
+    </div>
+    <div class="elevator-item" onclick="scrollToSlide(2)" id="elev-2">
+      <span class="elevator-dot"></span>
+      <span class="elevator-label">02 视觉组工作总结</span>
+    </div>
+    <div class="elevator-item" onclick="scrollToSlide(3)" id="elev-3">
+      <span class="elevator-dot"></span>
+      <span class="elevator-label">03 AI 安全运营</span>
+    </div>
+  </nav>
+
+  <!-- Continuous Vertical Stream -->
+  <div class="deck-stream">
+    
+    <!-- =========================================================================
+         SLIDE 1: SASE业务组上半年工作总结
+         ========================================================================= -->
+    <div class="slide-frame" id="frame-1">
+      <div class="slide-canvas" id="slide-1" data-slide-index="1" data-title="SASE业务组上半年工作总结">
+        <div class="slide-top-bar"></div>
+
+        <header class="header">
+          <div class="header-left">
+            <div class="badge-label">
+              <span class="dot"></span>
+              <span>MID-YEAR REVIEW & EXPLORATION</span>
+            </div>
+            <h1 class="main-title">SASE业务组上半年工作总结</h1>
+            <p class="sub-title">围绕核心业务场景打通可用性闭环与体验规范；持续推进 AI 从原型验证到工具链、规范代码资产的高效演进</p>
+          </div>
+          <div class="header-right">
+            <div class="period-chip">业务方向聚焦与落地攻坚 · AI 工程化探索沉淀</div>
+          </div>
+        </header>
+
+        <main class="grid-container">
+          <!-- LEFT COLUMN: 业务项目部分 (58%) -->
+          <section class="column-panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span class="panel-icon-box icon-business">01</span>
+                <span>业务项目部分</span>
+              </div>
+              <span class="panel-tagline">业务方向变更与聚焦 · 落地周期较长</span>
+            </div>
+
+            <div class="card card-dominance">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">SMG 1.0</span>
+                  <span class="card-desc">移动办公、组网等场景 Job 能力融合平台</span>
+                </div>
+                <span class="status-tag status-delay">预计 10.16 预发布</span>
+              </div>
+
+              <div class="metrics-row">
+                <div class="metric-item">
+                  <span class="metric-value">900+</span>
+                  <span class="metric-label">自检 / 演示检视问题</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value">95%</span>
+                  <span class="metric-label">问题整体闭环率</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value">98%</span>
+                  <span class="metric-label">核心体验缺陷闭环</span>
+                </div>
+              </div>
+
+              <ul class="detail-list">
+                <li class="detail-item">
+                  <span class="bullet"></span>
+                  <span><strong class="highlight-text">高保真业务 Demo 与可用性闭环</strong>：覆盖设备管理与全球安全核心页面，完成 2 个 AF 专家可用性测试，识别 33 个问题，关键体验问题（接入地址配置、接入码导出、前置后置策略等）均与规划同步并在研发闭环。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet"></span>
+                  <span><strong class="highlight-text">9+ 业务规范统一定义</strong>：主导高级搜索、对象选择器、权限管理、批量导入、配置下发、表格操作、导航栏、时间展示、空状态及文案等规范落地，部分已沉淀为 AI 资产技能。</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="bottom-row-grid">
+              <div class="card card-bottom-sub" style="margin-bottom:0;">
+                <div class="card-top">
+                  <div class="card-name-group">
+                    <span class="card-title">全球加速 GA</span>
+                  </div>
+                  <span class="status-tag status-progress">国庆后 Beta</span>
+                </div>
+                <div class="card-desc" style="margin-top:-4px;">全球办公跨境业务快速访问</div>
+                <ul class="detail-list" style="margin-top:2px;">
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span>前期完成竞品分析、AI 静态图发散与交付调研举措。</span>
+                  </li>
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span>高保真 AI Demo 通过 <strong class="highlight-text">TR1 评审</strong>；天枢全球一张网<strong class="highlight-text">直接复用 AI 代码交付</strong>。</span>
+                  </li>
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span>已完成立项与迭代一开发，当前处于检视阶段。</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="card card-bottom-sub" style="margin-bottom:0;">
+                <div class="card-top">
+                  <div class="card-name-group">
+                    <span class="card-title">GEN AI</span>
+                  </div>
+                  <span class="status-tag status-watch">审慎投入 · 观察</span>
+                </div>
+                <div class="card-desc" style="margin-top:-4px;">端侧 AI 使用安全防护</div>
+                <ul class="detail-list" style="margin-top:2px;">
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span>目前仅支持<strong class="highlight-text">审计看清管控</strong>，守牢合规安全底线。</span>
+                  </li>
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span>430 Beta 测试后，针对无感隔离与零信任动态授权产线暂缓投入，无感沙箱方案搁置。</span>
+                  </li>
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span>企业侧成熟应用场景短期尚不明确，保持理性观察。</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- RIGHT COLUMN: AI 部分 (42%) -->
+          <section class="column-panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span class="panel-icon-box icon-ai">02</span>
+                <span>AI 深度探索部分</span>
+              </div>
+              <span class="panel-tagline">项目常态化 · 持续探索 · 提效沉淀</span>
+            </div>
+
+            <div class="ai-card">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">SD 高保真技能</span>
+                </div>
+                <span class="ai-pill">标准 Token 体系</span>
+              </div>
+              <div class="ai-stat-box">
+                <div>
+                  <span class="ai-stat-num">80% ~ 90%</span>
+                  <span class="ai-stat-sub"> 基础表单 / 表格还原率</span>
+                </div>
+                <span style="font-size:14px; color:#059669; font-weight:700;">微调可达 90%</span>
+              </div>
+              <ul class="detail-list">
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong>Token 体系构建</strong>：提取全局视觉样式 Token、基础组件 Token 与公用页面模板 Token，输出 SD 高保真技能并打磨实现高一致性直出。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong>技术选型演进</strong>：从早期 Vue+Ant 拓展演进至 HTML+IDUX、Vue+IDUX 等标准技术栈。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong>协同交付落地</strong>：辅助 UEDC 进行统一工具的调试与整改，已有业务项目基于统一工具进入实装交付。</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ai-card">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">其他 AI 工具 / 资产探索</span>
+                </div>
+                <span class="ai-pill">效率赋能 · 资产沉淀</span>
+              </div>
+              <ul class="detail-list">
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong>部分技能 MVP 探索</strong>：输出体验目标、检视评估、竞品分析等技能。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong>业务规范代码资产沉淀</strong>：基于系列项目 AI Demo 实战验证，沉淀 <strong>SMG、SASE 产品线业务规范代码资产</strong>。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong>模块化资产复用</strong>：推动从“一次性 Demo 制作”走向“模块化资产复用”，对后续 SMG 版本的 AI Demo 迭代形成显著提效支撑。</span>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </main>
+
+        <footer class="slide-footer">
+          <div class="footer-left">
+            <span>年中工作复盘报告</span>
+            <span class="footer-dot"></span>
+            <span>聚焦关键体验 · 稳健推进迭代</span>
+            <span class="footer-dot"></span>
+            <span>AI 赋能业务实践</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(1)" title="单独导出第 1 页高清大图">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              <span>导出本页大图</span>
+            </button>
+            <span class="footer-page-tag">Page 01 / 03</span>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+
+    <!-- =========================================================================
+         SLIDE 2: 视觉组 2026 年上半年工作总结
+         ========================================================================= -->
+    <div class="slide-frame" id="frame-2">
+      <div class="slide-canvas" id="slide-2" data-slide-index="2" data-title="视觉组2026上半年工作总结">
+        <div class="slide-top-bar"></div>
+
+        <header class="header">
+          <div class="header-left">
+            <div class="badge-label">
+              <span class="dot"></span>
+              <span>MID-YEAR REVIEW & DESIGN INNOVATION</span>
+            </div>
+            <h1 class="main-title">视觉组 2026 年上半年工作总结</h1>
+            <p class="sub-title">高频支撑多业务线版本交付与体验调优；聚焦 AI 原生视觉语言、组件资产与工作流效能质变突破</p>
+          </div>
+          <div class="header-right">
+            <div class="period-chip">7 大业务高频交付 · AI 全链路提效 · 视觉资产沉淀</div>
+          </div>
+        </header>
+
+        <main class="grid-container-equal">
+          <!-- LEFT COLUMN: 业务交付与设计创新 (55%) -->
+          <section class="column-panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span class="panel-icon-box icon-business">01</span>
+                <span>业务交付与设计创新</span>
+              </div>
+              <span class="panel-tagline">高频多线交付托底 · 全新视觉风格落地 · 品牌多场景延展</span>
+            </div>
+
+            <div class="card card-dominance" style="flex: 1.1;">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">保障业务交付与体验优化</span>
+                  <span class="card-desc">多产品线端到端视觉设计与深度体验打磨</span>
+                </div>
+                <span class="status-tag status-progress">完成 65+ 版本</span>
+              </div>
+
+              <div class="metrics-row">
+                <div class="metric-item">
+                  <span class="metric-value">65+</span>
+                  <span class="metric-label">产品版本深度交付</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value">7 大</span>
+                  <span class="metric-label">核心产品全线覆盖</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value">100%</span>
+                  <span class="metric-label">核心体验优化跟进闭环</span>
+                </div>
+              </div>
+
+              <ul class="detail-list">
+                <li class="detail-item">
+                  <span class="bullet"></span>
+                  <span><strong class="highlight-text">多产品线矩阵全覆盖</strong>：强力支撑 <strong class="highlight-text">SASE、aTrust、DSP、保护 AI、XDR、DR、MSS</strong> 等 7 大核心产品，累计完成 <strong>65+ 个版本</strong>的高质量视觉设计交付与体验闭环。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet"></span>
+                  <span><strong class="highlight-text">设计品质与多端一致性</strong>：紧随产线敏捷迭代，建立快速响应机制，统筹把控各产品交互动效与视觉质感，守牢体验一致性底线。</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="bottom-row-grid">
+              <div class="card card-bottom-sub" style="margin-bottom:0;">
+                <div class="card-top">
+                  <div class="card-name-group">
+                    <span class="card-title">推动视觉创新</span>
+                  </div>
+                  <span class="status-tag status-success">全场景适配</span>
+                </div>
+                <div class="card-desc" style="margin-top:-4px;">风格重塑与大屏场景适配</div>
+                <ul class="detail-list" style="margin-top:2px;">
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span><strong class="highlight-text">AI 保护平台全新风格</strong>：落地全新视觉风格及专属组件库，打通产品统一视觉心智。</span>
+                  </li>
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span><strong class="highlight-text">XDR 运营大屏双主题</strong>：完成深浅双主题，灵活适配作战指挥中心（暗色）与办公会议（明色）。</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="card card-bottom-sub" style="margin-bottom:0;">
+                <div class="card-top">
+                  <div class="card-name-group">
+                    <span class="card-title">建设品牌与 IP</span>
+                  </div>
+                  <span class="status-tag status-purple">5+ 套模板输出</span>
+                </div>
+                <div class="card-desc" style="margin-top:-4px;">“小安”IP 资产化 · 数字人概念孵化</div>
+                <ul class="detail-list" style="margin-top:2px;">
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span><strong class="highlight-text">“小安”IP 场景化延展</strong>：推进产品与营销渗透，AI 拓展多场景规范并输出不少于 <strong>5 套标准化模板</strong>。</span>
+                  </li>
+                  <li class="detail-item">
+                    <span class="bullet"></span>
+                    <span><strong class="highlight-text">数字人前沿探索</strong>：完成初版概念方案，当前处于探索验证阶段，为后续产品化交互定型储备可能。</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- RIGHT COLUMN: AI 提效与综合复盘 (45%) -->
+          <section class="column-panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span class="panel-icon-box icon-ai">02</span>
+                <span>AI 提效探索与全周期复盘</span>
+              </div>
+              <span class="panel-tagline">全场景覆盖 · 40%~70% 效率质变 · 识别差距与持续演进</span>
+            </div>
+
+            <div class="ai-card ai-card-tall">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">探索 AI 提效：工具链与工作流重塑</span>
+                </div>
+                <span class="ai-pill">工作流全链路贯穿</span>
+              </div>
+              
+              <div class="metrics-row" style="background:#FFFFFF; border-color:var(--ai-border);">
+                <div class="metric-item">
+                  <span class="metric-value metric-value-ai">40% ~ 70%</span>
+                  <span class="metric-label">典型视觉任务效率提升</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value metric-value-ai">2天 ➔ 2h</span>
+                  <span class="metric-label">IP 海报制作耗时极限压缩</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value metric-value-ai">5 大</span>
+                  <span class="metric-label">设计全流程场景贯通</span>
+                </div>
+              </div>
+
+              <ul class="detail-list">
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong class="highlight-text">Figma 全场景组件库与 Prompt 资产</strong>：建立 Figma 规范底座，系统沉淀插图、图标等专属标准化 <strong>prompt / skill</strong> 核心资产包。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong class="highlight-text">AI 工作流全生命周期贯穿</strong>：能力端到端覆盖<strong>排版、概念插图、Logo、渲染效果图、动效</strong>等 5 大核心设计场景。</span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet" style="background:#818CF8;"></span>
+                  <span><strong class="highlight-text">生产力质变突破</strong>：典型视觉任务耗时降低 40%~70%，IP 海报产出由 2 天缩短至约 2 小时，大幅释放生产力。</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ai-card ai-card-flex" style="gap: 12px;">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">整体复盘：核心成效与破局抓手</span>
+                </div>
+                <span class="status-tag status-watch">客观审视 · 持续演进</span>
+              </div>
+
+              <div class="retro-container">
+                <div class="retro-sub-box retro-box-success">
+                  <div class="retro-header-tag">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <span>成效亮点：初步形成四位一体生产力底座</span>
+                  </div>
+                  <div class="retro-text">
+                    既高质量保障了较重的多产线业务交付，也初步打通并成型了<strong>“AI 原生视觉语言 + 组件体系 + IP 规范 + 多业务 AI 生产能力”</strong>新闭环。
+                  </div>
+                </div>
+
+                <div class="retro-sub-box retro-box-warning">
+                  <div class="retro-header-tag">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <span>当前不足与抓手：规范落地推行与前沿孵化深化</span>
+                  </div>
+                  <div class="retro-text">
+                    ① <strong>新平台需求多变导致组件库应用率偏低</strong>，后续需强化组件规范在下游的复用约束机制；<br>
+                    ② <strong>品牌深度探索与 AI Skill 落地仍需完善</strong>，推动 Prompt/Skill 沉淀从单点验证迈向工业化生产。
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+        </main>
+
+        <footer class="slide-footer">
+          <div class="footer-left">
+            <span>年中工作复盘报告</span>
+            <span class="footer-dot"></span>
+            <span>平衡多线交付托底与前沿创新</span>
+            <span class="footer-dot"></span>
+            <span>视觉资产规范与 AI 效能沉淀</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(2)" title="单独导出第 2 页高清大图">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              <span>导出本页大图</span>
+            </button>
+            <span class="footer-page-tag">Page 02 / 03</span>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+
+    <!-- =========================================================================
+         SLIDE 3: AI安全运营 (宽敞舒适大气模式 · 放大字号与间距 · 原汁原味)
+         ========================================================================= -->
+    <div class="slide-frame" id="frame-3">
+      <div class="slide-canvas slide-spacious" id="slide-3" data-slide-index="3" data-title="AI安全运营_工作总结">
+        <div class="slide-top-bar"></div>
+
+        <header class="header">
+          <div class="header-left">
+            <div class="badge-label">
+              <span class="dot"></span>
+              <span>MID-YEAR REVIEW & AI SECURITY OPS</span>
+            </div>
+            <h1 class="main-title">AI安全运营</h1>
+            <p class="sub-title">围绕 DR2.0、S1 与服务侧全景业务交付，推进最小化版本落地与服务流程体验优化</p>
+          </div>
+          <div class="header-right">
+            <div class="period-chip">SANGFOR 深信服科技 · 让每个用户的数字化更简单、更安全</div>
+          </div>
+        </header>
+
+        <main class="grid-container-secops">
+          
+          <!-- LEFT COLUMN: DR2.0 与 S1 (47%) -->
+          <section class="column-panel" style="gap: 22px;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span class="panel-icon-box icon-business">01</span>
+                <span>核心产品线推进</span>
+              </div>
+              <span class="panel-tagline">关键场景交付 · 概念方案到工程化落地</span>
+            </div>
+
+            <!-- Card 1: DR2.0 (充实呼吸感设计) -->
+            <div class="card" style="flex: 1.12; justify-content: flex-start; gap: 20px;">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">DR2.0</span>
+                  <span class="card-desc">杀毒、高级威胁分析、溯源调查及客户端</span>
+                </div>
+                <span class="status-tag status-progress">部分客户 beta · 预计 9 月下旬发布</span>
+              </div>
+
+              <ul class="detail-list">
+                <li class="detail-item">
+                  <span class="bullet" style="background: var(--primary-blue);"></span>
+                  <span>
+                    <span class="item-label-progress">关键进展</span>
+                    上半年交付了<strong class="highlight-text">杀毒</strong>，<strong class="highlight-text">高级威胁分析</strong>、<strong class="highlight-text">溯源调查</strong>以及<strong class="highlight-text">客户端</strong>等关键价值场景，目前在部分客户beta阶段，预计9月下旬发布；上半年在内测阶段也做了一些内部用户（it部、马来一线、交付代表等）验证，<strong class="highlight-text">整体反馈尚可，也有体验反馈不佳的地方</strong>
+                  </span>
+                </li>
+                <li class="detail-item">
+                  <span class="bullet" style="background: #D97706;"></span>
+                  <span>
+                    <span class="item-label-issue">遗留问题</span>
+                    平台仍存在一些体验问题遗留，如：平台存在比较复杂的业务逻辑和机制概念需要说明，以及高级检索操作效率低，性能卡顿等问题。这部分问题也有在H2的一些版本逐步优化。
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Card 2: S1 -->
+            <div class="card" style="flex: 1; justify-content: flex-start; gap: 18px;">
+              <div class="card-top">
+                <div class="card-name-group">
+                  <span class="card-title">S1</span>
+                  <span class="card-desc">AI Native 全新交互范式与工程化落地</span>
+                </div>
+                <span class="status-tag status-delay">输出 930 方案 · 延期到 1030 发布</span>
+              </div>
+
+              <ul class="detail-list">
+                <li class="detail-item">
+                  <span class="bullet" style="background: var(--ai-purple);"></span>
+                  <span>
+                    <span class="item-label-progress">关键进展</span>
+                    上半年主要产出概念方案阶段，借助AI快速交付5个大版本多个小版本的概念方案，同时对比分析国内外20多款AI native产品，总结出s1AI native全新交互范式设计原则；目前工程化落地阶段，已输出930版本的方案，近期由于能力<strong class="highlight-text">预研进展不及预期会延期到1030发布</strong>。
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+          </section>
+
+          <!-- RIGHT COLUMN: 服务侧 (53%) -->
+          <section class="column-panel" style="gap: 22px;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <span class="panel-icon-box icon-service">02</span>
+                <span>服务侧</span>
+              </div>
+              <span class="panel-tagline">多平台融合协同 · SOP试运营推广 · 海外多语种适配</span>
+            </div>
+
+            <!-- Card 3: 服务侧主体卡片 -->
+            <div class="card" style="flex: 1; justify-content: space-between; gap: 16px;">
+              
+              <div class="subcard-list">
+                
+                <!-- 1. mssw平台 -->
+                <div class="service-sub-card">
+                  <div class="service-sub-header">
+                    <div class="service-sub-title">
+                      <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#2563EB;"></span>
+                      <span>1. mssw平台</span>
+                    </div>
+                    <span class="status-tag status-success" style="padding:4px 10px; font-size:13.5px;">已发布 · 8个客户试用</span>
+                  </div>
+                  <ul class="detail-list" style="gap:8px;">
+                    <li class="detail-item">
+                      <span class="bullet"></span>
+                      <span><span class="item-label-progress">关键进展</span>上半年短时间内快速交付了和xdr平台融合可支撑服务交付的最小化版本，目前已发布，<strong class="highlight-text">已上线8个客户，多个服务经理在试用中</strong>。</span>
+                    </li>
+                    <li class="detail-item">
+                      <span class="bullet" style="background:#D97706;"></span>
+                      <span><span class="item-label-issue">遗留问题</span>因为框架问题以及迁移成本问题（比如用iframe嵌套导致的兼容性问题）导致的一些体验问题遗留，需要在后续版本逐步优化解决</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- 2. 客户job服务优化 -->
+                <div class="service-sub-card">
+                  <div class="service-sub-header">
+                    <div class="service-sub-title">
+                      <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#059669;"></span>
+                      <span>2. 客户job服务优化</span>
+                    </div>
+                    <span class="status-tag status-progress" style="padding:4px 10px; font-size:13.5px;">运营中心全面推广</span>
+                  </div>
+                  <ul class="detail-list" style="gap:8px;">
+                    <li class="detail-item">
+                      <span class="bullet"></span>
+                      <span><span class="item-label-progress">关键进展</span>针对年前和运营中心一起共创产出的预防流SOP，上半年选取了30家客户试运营，收回有效样本27个。78%回访客户认可资产扫描信息收集价值，100%认可公网漏洞扫描价值，<strong class="highlight-text">客户反馈“服务质量提升，能暴露解决问题”</strong>。目前已于运营中心全面推广。</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- 3. 海外mdr服务 -->
+                <div class="service-sub-card">
+                  <div class="service-sub-header">
+                    <div class="service-sub-title">
+                      <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#4F46E5;"></span>
+                      <span>3. 海外mdr服务</span>
+                    </div>
+                    <span class="status-tag status-purple" style="padding:4px 10px; font-size:13.5px;">Nexus 顺利发布 · 适配 4 种语言</span>
+                  </div>
+                  <ul class="detail-list" style="gap:8px;">
+                    <li class="detail-item">
+                      <span class="bullet"></span>
+                      <span><span class="item-label-progress">关键进展</span>上半年从0-1交付了Nexus平台并顺利发布，能够适配欧洲和东南亚不同区域渠道的业务需求；同步交付了多语言小语种报告，已能够适配四种语言，德语、印尼语、泰语、意大利语，印尼语和德语报告的<strong class="highlight-text">体验基本符合预期</strong>；</span>
+                    </li>
+                    <li class="detail-item">
+                      <span class="bullet" style="background:#D97706;"></span>
+                      <span><span class="item-label-issue">遗留问题</span>从用客户和渠道的反馈来看还存在一些问题如：词条翻译个性化不满足、翻译像机翻等问题。</span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <!-- 底部补充交付条 -->
+              <div class="service-other-card">
+                <span class="service-other-badge">其他协同交付</span>
+                <span>上半年还做了一些其他的交付，比如协同运营服务设计、aes的体验问题改进、XDR大小版本等。</span>
+              </div>
+
+            </div>
+
+          </section>
+
+        </main>
+
+        <footer class="slide-footer">
+          <div class="footer-left">
+            <span>年中工作复盘报告</span>
+            <span class="footer-dot"></span>
+            <span>业务交付与体验优化</span>
+            <span class="footer-dot"></span>
+            <span>服务侧深度协同</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="slide-direct-dl-btn" onclick="exportSingleSlide(3)" title="单独导出第 3 页高清大图">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              <span>导出本页大图</span>
+            </button>
+            <span class="footer-page-tag">Page 03 / 03</span>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Floating Central Bar -->
+  <div class="floating-toolbar" id="floatingToolbar">
+    <div class="tb-info-tag">
+      <span class="tb-info-badge">垂直自由流</span>
+      <span id="scaleDisplay">自适应缩放</span>
+    </div>
+
+    <button class="tb-btn" onclick="toggleFullscreen()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      全屏演示
+    </button>
+    <button class="tb-btn" onclick="window.print()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      导出 3 页 PDF
+    </button>
+    <button class="tb-btn tb-btn-primary" id="btnExportCurrent" onclick="exportCurrentSlide()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+      下载当前视口大图
+    </button>
+  </div>
+
+  <script>
+    const totalSlides = 3;
+    let currentInViewSlide = 1;
+
+    function showToast(text) {
+      const toast = document.getElementById('toastMsg');
+      if (!toast) return;
+      toast.innerText = text;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    function scrollToSlide(index) {
+      const frame = document.getElementById(`frame-${index}`);
+      if (frame) {
+        frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      const frames = [1, 2, 3].map(i => document.getElementById(`frame-${i}`));
+      const scrollY = window.scrollY + window.innerHeight / 2;
+
+      for (let i = 0; i < frames.length; i++) {
+        const frame = frames[i];
+        if (!frame) continue;
+        const top = frame.offsetTop;
+        const bottom = top + frame.offsetHeight;
+        if (scrollY >= top && scrollY <= bottom) {
+          currentInViewSlide = i + 1;
+          break;
+        }
+      }
+
+      for (let i = 1; i <= totalSlides; i++) {
+        const item = document.getElementById(`elev-${i}`);
+        if (item) {
+          if (i === currentInViewSlide) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        }
+      }
+    }, { passive: true });
+
+    function autoScaleSlide() {
+      const vw = window.innerWidth;
+      const targetWidth = vw * 0.92;
+      let scale = targetWidth / 1920;
+      
+      if (scale > 1.0) scale = 1.0;
+      if (scale < 0.45) scale = 0.45;
+      
+      document.documentElement.style.setProperty('--slide-scale', scale);
+      
+      const scaleDisplay = document.getElementById('scaleDisplay');
+      if (scaleDisplay) {
+        scaleDisplay.innerText = `${Math.round(scale * 100)}% 视口适配`;
+      }
+    }
+
+    window.addEventListener('resize', autoScaleSlide);
+    window.addEventListener('orientationchange', autoScaleSlide);
+    document.addEventListener('fullscreenchange', autoScaleSlide);
+    window.addEventListener('DOMContentLoaded', autoScaleSlide);
+    autoScaleSlide();
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.error(err));
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    function exportCurrentSlide() {
+      exportSingleSlide(currentInViewSlide);
+    }
+
+    async function exportSingleSlide(slideIndex) {
+      const slide = document.getElementById(`slide-${slideIndex}`);
+      if (!slide) return;
+      
+      const rawTitle = slide.getAttribute('data-title') || `Slide_${slideIndex}`;
+      const safeTitle = rawTitle.replace(/[\\/:*?"<>|]/g, '_');
+      const filename = `2026年中工作总结_第${slideIndex}页_${safeTitle}.png`;
+
+      showToast(`正在渲染第 ${slideIndex} 页 1080P 高清大图...`);
+
+      const prevTransform = slide.style.transform;
+      const prevTop = slide.style.top;
+      const prevLeft = slide.style.left;
+      const prevPos = slide.style.position;
+      const prevMargin = slide.style.margin;
+      const prevZIndex = slide.style.zIndex;
+      const prevRadius = slide.style.borderRadius;
+      const prevShadow = slide.style.boxShadow;
+
+      try {
+        slide.style.position = 'fixed';
+        slide.style.top = '0px';
+        slide.style.left = '0px';
+        slide.style.transform = 'none';
+        slide.style.margin = '0px';
+        slide.style.borderRadius = '0px';
+        slide.style.boxShadow = 'none';
+        slide.style.zIndex = '999999';
+
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        await new Promise(resolve => setTimeout(resolve, 80));
+
+        const canvas = await html2canvas(slide, {
+          scale: 1,
+          width: 1920,
+          height: 1080,
+          x: 0,
+          y: 0,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: 1920,
+          windowHeight: 1080,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#FFFFFF',
+          logging: false,
+          ignoreElements: function(element) {
+            return element.id === 'floatingToolbar' || 
+                   element.id === 'elevatorNav' || 
+                   element.id === 'toastMsg' || 
+                   element.classList.contains('slide-direct-dl-btn');
+          }
+        });
+
+        if (canvas.toBlob) {
+          canvas.toBlob(function(blob) {
+            if (!blob) {
+              triggerDataURLDownload(canvas, filename);
+              return;
+            }
+            const blobUrl = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            downloadLink.style.display = 'none';
+            downloadLink.href = blobUrl;
+            downloadLink.download = filename;
+            downloadLink.setAttribute('download', filename);
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            showToast(`已下载第 ${slideIndex} 页高清图：${filename}`);
+
+            if (navigator.clipboard && window.ClipboardItem) {
+              try {
+                navigator.clipboard.write([
+                  new ClipboardItem({ 'image/png': blob })
+                ]).then(() => {
+                  showToast(`图片已下载，并已复制到剪贴板，可直接粘贴！`);
+                }).catch(() => {});
+              } catch (clipErr) {}
+            }
+
+            setTimeout(() => {
+              document.body.removeChild(downloadLink);
+              URL.revokeObjectURL(blobUrl);
+            }, 2000);
+          }, 'image/png', 1.0);
+        } else {
+          triggerDataURLDownload(canvas, filename);
+        }
+
+      } catch (e) {
+        console.error('Export error:', e);
+        showToast('导出异常，请尝试使用“导出 PDF”保存');
+      } finally {
+        slide.style.transform = prevTransform;
+        slide.style.top = prevTop;
+        slide.style.left = prevLeft;
+        slide.style.position = prevPos;
+        slide.style.margin = prevMargin;
+        slide.style.borderRadius = prevRadius;
+        slide.style.boxShadow = prevShadow;
+        slide.style.zIndex = prevZIndex;
+      }
+    }
+
+    function triggerDataURLDownload(canvas, filename) {
+      try {
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.style.display = 'none';
+        link.download = filename;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => document.body.removeChild(link), 1000);
+        showToast(`下载完成：${filename}`);
+      } catch (err) {
+        console.error('DataURL download failed:', err);
+        alert('无法直接生成图片，请使用底部“导出 3 页 PDF”进行保存');
+      }
+    }
+  </script>
+</body>
+</html>

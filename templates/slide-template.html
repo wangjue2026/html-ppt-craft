@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} - 16:9 HTML PPT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --slide-bg: #FFFFFF;
+      --card-bg: #F8FAFC;
+      --card-inner-bg: #FFFFFF;
+      
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-tertiary: #64748B;
+      --text-muted: #94A3B8;
+      
+      --border-subtle: #E2E8F0;
+      --border-card: #E2E8F0;
+      
+      --primary-blue: #2563EB;
+      --primary-light: #EFF6FF;
+      --primary-border: #BFDBFE;
+      
+      --success-green: #059669;
+      --success-light: #ECFDF5;
+      --success-border: #A7F3D0;
+      
+      --warning-amber: #D97706;
+      --warning-light: #FFFBEB;
+      --warning-border: #FDE68A;
+      
+      --purple-accent: #4F46E5;
+      --purple-light: #EEF2FF;
+      --purple-border: #C7D2FE;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #ECEFF3;
+      font-family: 'Noto Sans SC', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      position: relative;
+    }
+
+    /* Presentation Stage */
+    .stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Strict 16:9 Canvas (1920x1080) Auto-scaled */
+    .slide-canvas {
+      position: absolute;
+      width: 1920px;
+      height: 1080px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(var(--slide-scale, 0.7));
+      transform-origin: center center;
+      background: var(--slide-bg);
+      border-radius: 12px;
+      box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.15), 0 4px 16px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 48px 64px 36px;
+      transition: transform 0.05s ease-out;
+    }
+
+    /* Top Accent Line */
+    .slide-top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #2563EB 0%, #4F46E5 50%, #06B6D4 100%);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 28px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .badge-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-blue);
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      padding: 4px 12px;
+      border-radius: 5px;
+      width: fit-content;
+    }
+
+    .badge-label .dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--primary-blue);
+      border-radius: 50%;
+    }
+
+    .main-title {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .sub-title {
+      font-size: 17px;
+      color: var(--text-tertiary);
+      font-weight: 400;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .period-chip {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: #F1F5F9;
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Grid Layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1.36fr 1fr;
+      gap: 28px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .column-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 0;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .panel-icon-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      background: #EFF6FF;
+      color: var(--primary-blue);
+      border: 1px solid var(--primary-border);
+    }
+
+    .panel-tagline {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+
+    .status-tag {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Metrics Strip */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      background: var(--card-inner-bg);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary-blue);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.15;
+    }
+
+    .metric-label {
+      font-size: 12.5px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+
+    /* Detail List */
+    .detail-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .detail-item {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .bullet {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #94A3B8;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    .slide-footer {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    /* Floating Toolbar */
+    .floating-toolbar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 8px 14px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+    }
+
+    .tb-info {
+      color: #94A3B8;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-right: 6px;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .tb-badge {
+      background: #2563EB;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .tb-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F8FAFC;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .tb-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+    }
+
+    .tb-btn-primary {
+      background: #2563EB;
+      border-color: #3B82F6;
+    }
+
+    @media print {
+      body { background: transparent; }
+      .floating-toolbar { display: none !important; }
+      .stage { position: static; width: 100%; height: 100vh; }
+      .slide-canvas {
+        position: static;
+        transform: none !important;
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="slide-canvas" id="slideTarget">
+      <div class="slide-top-bar"></div>
+
+      <!-- Header Slot -->
+      <header class="header">
+        <div class="header-left">
+          <div class="badge-label">
+            <span class="dot"></span>
+            <span>{{CATEGORY_BADGE}}</span>
+          </div>
+          <h1 class="main-title">{{MAIN_TITLE}}</h1>
+          <p class="sub-title">{{SUB_TITLE}}</p>
+        </div>
+        <div class="header-right">
+          <div class="period-chip">{{PERIOD_OR_DATE}}</div>
+        </div>
+      </header>
+
+      <!-- Main Body Slot -->
+      <main class="grid-container">
+        <!-- Content Panels Go Here -->
+      </main>
+
+      <!-- Footer Slot -->
+      <footer class="slide-footer">
+        <div class="footer-left">
+          <span>{{REPORT_TITLE}}</span>
+          <span style="display:inline-block; width:4px; height:4px; background:#CBD5E1; border-radius:50%;"></span>
+          <span>{{TAGLINE}}</span>
+        </div>
+        <div>Page 01 / 01</div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Floating Control Bar -->
+  <div class="floating-toolbar">
+    <div class="tb-info">
+      <span class="tb-badge">16:9 标准比例</span>
+      <span id="scaleDisplay" style="color:#E2E8F0; font-family:monospace; font-size:12px;">100% 视口适配</span>
+    </div>
+    <button class="tb-btn" onclick="toggleFullscreen()">⛶ 全屏演示</button>
+    <button class="tb-btn" onclick="window.print()">🖨️ 导出 PDF</button>
+    <button class="tb-btn tb-btn-primary" id="btnExportImg" onclick="exportToImage()">📥 下载高清图片</button>
+  </div>
+
+  <script>
+    function autoScaleSlide() {
+      const isFullscreen = !!document.fullscreenElement;
+      const marginRatio = isFullscreen ? 0.98 : 0.94;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const scale = Math.min((vw * marginRatio) / 1920, (vh * marginRatio) / 1080);
+      document.documentElement.style.setProperty('--slide-scale', scale);
+      const display = document.getElementById('scaleDisplay');
+      if (display) display.innerText = `${Math.round(scale * 100)}% 视口适配`;
+    }
+
+    window.addEventListener('resize', autoScaleSlide);
+    document.addEventListener('fullscreenchange', autoScaleSlide);
+    window.addEventListener('DOMContentLoaded', autoScaleSlide);
+    autoScaleSlide();
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.error(err));
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    async function exportToImage() {
+      const btn = document.getElementById('btnExportImg');
+      const old = btn.innerHTML;
+      btn.innerHTML = '正在导出...';
+      btn.disabled = true;
+      try {
+        const slide = document.getElementById('slideTarget');
+        const canvas = await html2canvas(slide, {
+          scale: 1,
+          width: 1920,
+          height: 1080,
+          useCORS: true,
+          backgroundColor: '#FFFFFF'
+        });
+        const link = document.createElement('a');
+        link.download = 'presentation_16x9_slide.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        alert('导出失败，请使用系统截屏或打印为PDF');
+      } finally {
+        btn.innerHTML = old;
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
